@@ -3,12 +3,12 @@
     {
       "id": 1,
       "title": "html",
-      "author": "html is..."
+      "body": "html is..."
     },
     {
       "id": 2,
       "title": "css",
-      "author": "css is..."
+      "body": "css is..."
     }
   ]
 }
