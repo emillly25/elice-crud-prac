@@ -1,6 +1,6 @@
 import './App.css';
 import { Header } from './Header';
-import { Link } from 'react-router-dom'
+import { Link, Routes, Route } from 'react-router-dom'
 
 function Nav(){
   return (
@@ -20,13 +20,24 @@ function Welcome(){
     </article>
   )
 }
+function Read(){
+  return(
+    <article>
+      <h2>Read</h2>
+      Hello, Read!
+    </article>
+  )
+}
 
 function App(){
   return (
     <div>
       <Header></Header>
       <Nav></Nav>
-      <Welcome></Welcome>
+      <Routes>
+        <Route path='/' element={<Welcome/>}/>
+        <Route path='/read/1' element={<Read/>}/>
+      </Routes>
     </div>
   );
 }
