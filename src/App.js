@@ -12,11 +12,21 @@ function Nav(){
   )
 }
 
+function Welcome(){
+  return(
+    <article>
+      <h2>Welcome</h2>
+      Hello, WEB! 
+    </article>
+  )
+}
+
 function App(){
   return (
     <div>
       <Header></Header>
       <Nav></Nav>
+      <Welcome></Welcome>
     </div>
   );
 }
