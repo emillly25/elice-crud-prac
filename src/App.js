@@ -3,17 +3,7 @@ import { Header } from './Header';
 import { Link, Routes, Route, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Welcome } from './Welcome';
-
-function Nav(props){
-  const topics = props.data
-  return (
-    <nav>
-      <ol>
-      {topics.map(el=> <li key={el.id}><Link to={`/read/${el.id}`}>{el.title}</Link></li>)}
-      </ol>
-    </nav>
-  )
-}
+import { Nav } from './Nav';
 
 function Read(){
   const params = useParams()
@@ -33,6 +23,27 @@ function Read(){
     <article>
       <h2>{topic.title}</h2>
       {topic.body}
+    </article>
+  )
+}
+
+function Control(){
+  return(
+    <ul>
+      <li><Link to='/create'>Create</Link></li>
+    </ul>
+  )
+}
+
+function Create(){
+  return(
+    <article>
+      <h1>Create</h1>
+      <form>
+        <p><input type='text' name='title' placeholder='title'></input></p>
+        <p><textarea name='body' placeholder='body'></textarea></p>
+        <p><input type='submit' value='create'></input></p>
+      </form>
     </article>
   )
 }
@@ -57,7 +68,9 @@ function App(){
       <Routes>
         <Route path='/' element={<Welcome/>}/>
         <Route path='/read/:id' element={<Read/>}/>
+        <Route path='/create' element={<Create/>}/>
       </Routes>
+      <Control></Control>
     </div>
   );
 }
