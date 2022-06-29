@@ -1,6 +1,6 @@
 import './App.css';
 import { Header } from './Header';
-import { Link, Routes, Route, useParams } from 'react-router-dom'
+import { Link, Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Welcome } from './Welcome';
 import { Nav } from './Nav';
@@ -35,11 +35,17 @@ function Control(){
   )
 }
 
-function Create(){
+function Create(props){
+  function submitHanlder(e){
+    e.preventDefault()
+    const title = e.target.title.value
+    const body = e.target.body.value
+    props.onCreate(title,body)
+  }
   return(
     <article>
       <h1>Create</h1>
-      <form>
+      <form onSubmit={submitHanlder}>
         <p><input type='text' name='title' placeholder='title'></input></p>
         <p><textarea name='body' placeholder='body'></textarea></p>
         <p><input type='submit' value='create'></input></p>
@@ -50,6 +56,7 @@ function Create(){
 
 function App(){
   const [topics, setTopics] = useState([])
+  const navigate = useNavigate()
 
   async function refresh(){
     const res = await fetch('http://localhost:3333/topics')
@@ -60,6 +67,19 @@ function App(){
   useEffect(()=>{
     refresh()
   },[])
+
+  async function createHandler(title,body){
+      const res = await fetch('/topics', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, body }), 
+      });
+      const data = await res.json();
+      navigate(`/read/${data.id}`)
+      refresh()
+    }
   
   return (
     <div>
@@ -68,7 +88,7 @@ function App(){
       <Routes>
         <Route path='/' element={<Welcome/>}/>
         <Route path='/read/:id' element={<Read/>}/>
-        <Route path='/create' element={<Create/>}/>
+        <Route path='/create' element={<Create onCreate={createHandler}/>}/>
       </Routes>
       <Control></Control>
     </div>
