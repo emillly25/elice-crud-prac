@@ -28,9 +28,18 @@ function Read(){
 }
 
 function Control(){
+  const params = useParams()
+  const id = Number(params.id)
+  let contextUI = null
+  if(id){
+    contextUI = <>
+      <li><Link to={`update/${id}`}>Update</Link></li>
+    </>
+  }
   return(
     <ul>
       <li><Link to='/create'>Create</Link></li>
+      {contextUI}
     </ul>
   )
 }
@@ -57,6 +66,7 @@ function Create(props){
 function App(){
   const [topics, setTopics] = useState([])
   const navigate = useNavigate()
+
 
   async function refresh(){
     const res = await fetch('http://localhost:3333/topics')
@@ -90,7 +100,11 @@ function App(){
         <Route path='/read/:id' element={<Read/>}/>
         <Route path='/create' element={<Create onCreate={createHandler}/>}/>
       </Routes>
-      <Control></Control>
+      <Routes>
+        <Route path='/' element={<Control/>}/>
+        <Route path='/read/:id' element={<Control/>}/>
+      </Routes>
+      
     </div>
   );
 }
