@@ -8,13 +8,14 @@ import { Create } from './Create';
 import { Read } from './Read';
 import { Update } from './Update';
 
-function Control(){
+function Control(props){
   const params = useParams()
   const id = Number(params.id)
   let contextUI = null
   if(id){
     contextUI = <>
       <li><Link to={`/update/${id}`}>Update</Link></li>
+      <li><button onClick={()=> {props.onDelete(id)}}>Delete</button></li>
     </>
   }
   return(
@@ -24,6 +25,7 @@ function Control(){
     </ul>
   )
 }
+
 
 function App(){
   const [topics, setTopics] = useState([])
@@ -64,6 +66,15 @@ function App(){
       refresh()
       navigate(`/read/${data.id}`)
     }
+
+    async function deleteHandler(id){
+      const res = await fetch('/topics/'+ id, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      refresh()
+      navigate('/')
+    }
   
   return (
     <div>
@@ -77,7 +88,7 @@ function App(){
       </Routes>
       <Routes>
         <Route path='/' element={<Control/>}/>
-        <Route path='/read/:id' element={<Control/>}/>
+        <Route path='/read/:id' element={<Control onDelete={deleteHandler}/>}/>
       </Routes>
       
     </div>
