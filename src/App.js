@@ -4,11 +4,12 @@ import { Link, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Welcome } from './Welcome';
 
-function Nav(){
+function Nav(props){
+  const topics = props.data
   return (
     <nav>
       <ol>
-        <li><Link to='/read/1'>html</Link></li>
+      {topics.map(el=> <li key={el.id}><Link to={`/read/${el.id}`}>{el.title}</Link></li>)}
       </ol>
     </nav>
   )
@@ -40,7 +41,7 @@ function App(){
   return (
     <div>
       <Header></Header>
-      <Nav></Nav>
+      <Nav data={topics}></Nav>
       <Routes>
         <Route path='/' element={<Welcome/>}/>
         <Route path='/read/1' element={<Read/>}/>
