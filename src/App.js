@@ -1,6 +1,8 @@
 import './App.css';
 import { Header } from './Header';
 import { Link, Routes, Route } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Welcome } from './Welcome';
 
 function Nav(){
   return (
@@ -12,14 +14,6 @@ function Nav(){
   )
 }
 
-function Welcome(){
-  return(
-    <article>
-      <h2>Welcome</h2>
-      Hello, WEB! 
-    </article>
-  )
-}
 function Read(){
   return(
     <article>
@@ -30,6 +24,19 @@ function Read(){
 }
 
 function App(){
+  const [topics, setTopics] = useState([])
+
+  async function refresh(){
+    const res = await fetch('http://localhost:3333/topics')
+    const data = await res.json()
+    setTopics(data)  
+  }
+
+  useEffect(()=>{
+    refresh()
+  
+  },[])
+
   return (
     <div>
       <Header></Header>
